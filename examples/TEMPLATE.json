@@ -1,0 +1,22 @@
+{
+  "phase": "review",
+  "runId": "myproject-review",
+  "target": { "repo": "/ABSOLUTE/PATH/TO/TARGET/GIT/REPO", "lang": "ts", "framework": "describe-it" },
+  "manifest": "runs/myproject-review/manifest.json",
+  "conventions": "The project's coding rules, distilled to ~10 lines: error-handling pattern, logging rules, validation/schema conventions, strictness level, what counts as a defect here. The reviewer judges against these; deviations become 'convention' findings.",
+  "gates": {
+    "build": "SHELL COMMAND that lints/compiles — non-zero exit means FAIL (must always pass)",
+    "test": "SHELL COMMAND that runs the test suite (must be GREEN before you start resolve)",
+    "testSetup": "Notes for authoring + running tests: how to scope a single test, runner quirks, container exec prefix, fixtures/DB isolation."
+  },
+  "reviewSeverity": "medium",
+  "fixSeverity": "medium",
+  "criticSeverity": "high",
+  "reviewPasses": 1,
+  "maxRounds": 2,
+  "batch": { "locCap": 3000, "maxIssues": 10 },
+  "resolveOnly": [],
+  "baselineNote": "Describe any EXPECTED pre-existing working-tree changes so they are folded into the staged baseline rather than treated as batch work. Omit if the tree is clean.",
+  "models": { "review": "sonnet", "verify": "opus", "fix": "opus", "critic": "sonnet", "scribe": "sonnet" },
+  "agentTypes": {}
+}
