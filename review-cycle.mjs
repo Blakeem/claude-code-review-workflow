@@ -478,7 +478,15 @@ BATCH ${batch.id}. Get the exact scope first:
   \`git -C ${REPO} diff --staged --stat\`  (accepted baseline — context only)
 
 JOB 1 — FIX VERIFICATION. The fixer claims these issues are FIXED. For each, read its full entry
-in ${ISSUES_JSON} and check the diff GENUINELY resolves it (not partially, not just nearby):
+in ${ISSUES_JSON}, then INDEPENDENTLY re-derive the defect's root cause from the CURRENT code —
+do NOT just confirm the literal edit the issue text described is present; the issue itself may have
+under-scoped the bug. A fix counts as landed ONLY if it closes that root cause COMPLETELY. If the
+same mechanism still has a live residual path the diff left open (a sibling code path, an
+already-started async chain that still writes the bad state, an untouched branch or caller with the
+identical defect), that is actually_fixed=false with a concrete note — EVEN IF the described edit
+was made. This root-cause completeness check is scoped to the fix's OWN target; unrelated
+pre-existing issues still belong to JOB 2's drop list, not here. Check the diff GENUINELY resolves
+it (not partially, not just nearby):
 ${claimedFixed.map((i) => `  - ${i.id} :: ${i.file} — ${i.title}`).join('\n') || '  (none claimed fixed)'}
 Return one fix_check per issue. actually_fixed=false needs a concrete note on what is missing.
 
